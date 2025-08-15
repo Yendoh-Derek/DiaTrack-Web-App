@@ -1,0 +1,12 @@
+# Environment Variables Template for DiaTrack
+# Copy this file to .env and fill in your actual values
+
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+
+# Grok API Configuration
+VITE_GROK_API_KEY=your_grok_api_key_here
+VITE_GROK_API_URL=https://api.x.ai/v1/chat/completions
+
+# Note: All variables must start with VITE_ to be accessible in the browser
