@@ -63,14 +63,6 @@ cp .env.example .env.local
 npm run dev
 ```
 
-### Environment Variables
-
-Create a `.env.local` file with the following variables:
-
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
 
 ### Supabase Configuration
 
