@@ -33,7 +33,7 @@ const RiskFactorDetail: React.FC<RiskFactorDetailProps> = ({
         onClick={() => setIsOpen(true)}
       >
         <CardContent className="p-4 flex flex-col items-center">
-          <div className="text-diabetesSense-accent mb-2">{icon}</div>
+          <div className="text-diatrack-accent mb-2">{icon}</div>
           <h3 className="text-lg font-medium text-white mb-1">{title}</h3>
           <div className="flex items-baseline">
             <span className="text-2xl font-bold text-white">{value}</span>
@@ -41,15 +41,15 @@ const RiskFactorDetail: React.FC<RiskFactorDetailProps> = ({
           </div>
           <p className="text-xs text-gray-400 mt-1 text-center">{description}</p>
         </CardContent>
-        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-diabetesSense-accent to-diabetesSense-accent/30"></div>
+        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-diatrack-accent to-diatrack-accent/30"></div>
       </Card>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-diabetesSense-background border border-white/10 text-white max-w-lg">
+        <DialogContent className="bg-diatrack-background border border-white/10 text-white max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
-              <span className="text-diabetesSense-accent">{icon}</span>
-              <span>{title}: <span className="text-diabetesSense-accent">{value} {unit}</span></span>
+              <span className="text-diatrack-accent">{icon}</span>
+              <span>{title}: <span className="text-diatrack-accent">{value} {unit}</span></span>
             </DialogTitle>
             <DialogDescription className="text-gray-300">
               {description}
@@ -67,7 +67,7 @@ const RiskFactorDetail: React.FC<RiskFactorDetailProps> = ({
               <ul className="space-y-2">
                 {recommendations.map((rec, index) => (
                   <li key={index} className="text-gray-300 text-sm flex items-start">
-                    <span className="text-diabetesSense-accent mr-2">•</span>
+                    <span className="text-diatrack-accent mr-2">•</span>
                     <span>{rec}</span>
                   </li>
                 ))}

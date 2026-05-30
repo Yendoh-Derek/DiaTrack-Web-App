@@ -1,5 +1,5 @@
-
-import { useEffect, useState } from 'react';
+import { getRiskLevelFromProbability } from '@/constants/riskThresholds';
+import RiskBadge from '@/components/risk/RiskBadge';
 
 interface RiskGaugeProps {
   score: number;
@@ -7,60 +7,42 @@ interface RiskGaugeProps {
 }
 
 const RiskGauge = ({ score, size = 200 }: RiskGaugeProps) => {
-  const [animatedScore, setAnimatedScore] = useState(0);
-  const percentage = score * 100;
+  const pct = Math.round(score * 100);
   const radius = (size - 20) / 2;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (animatedScore / 100) * circumference;
-  
-  const getRiskLevel = (score: number) => {
-    if (score < 0.3) return { level: 'Low', color: 'circle-low' };
-    if (score < 0.7) return { level: 'Moderate', color: 'circle-moderate' };
-    return { level: 'High', color: 'circle-high' };
-  };
-  
-  const { level, color } = getRiskLevel(score);
-  
-  useEffect(() => {
-    // Animate the score from 0 to the actual value
-    const timer = setTimeout(() => {
-      setAnimatedScore(score * 100);
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [score]);
-  
+  const strokeDashoffset = circumference - (pct / 100) * circumference;
+
+  const level = getRiskLevelFromProbability(score);
+  const tier = getRiskTierFromProbability(score);
+  const colorClass = tier === 'low' ? 'circle-low' : tier === 'mod' ? 'circle-mod' : tier === 'high' ? 'circle-high' : 'circle-crit';
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`Risk score ${pct} percent, ${level} risk`}>
+          <circle className="circle-bg" cx={size / 2} cy={size / 2} r={radius} />
           <circle
-            className="circle-bg"
-            cx={size/2}
-            cy={size/2}
-            r={radius}
-          />
-          <circle
-            className={`circle ${color}`}
-            cx={size/2}
-            cy={size/2}
+            className={`circle ${colorClass}`}
+            cx={size / 2}
+            cy={size / 2}
             r={radius}
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-4xl font-bold text-white">{Math.round(animatedScore)}</span>
-          <span className="text-lg text-gray-300">Risk Score</span>
+          <span
+            className="tabular-nums font-bold"
+            style={{ fontSize: "var(--text-data-xl)", color: "var(--color-text-primary)" }}
+          >
+            {pct}
+          </span>
+          <span style={{ fontSize: "var(--text-body-sm)", color: "var(--color-text-secondary)" }}>
+            Risk Score
+          </span>
         </div>
       </div>
-      <div 
-        className={`mt-2 px-4 py-1 rounded-full text-white text-sm font-medium
-          ${level === 'Low' ? 'bg-diabetesSense-low' : 
-            level === 'Moderate' ? 'bg-diabetesSense-moderate' : 'bg-diabetesSense-high'}`}
-      >
-        {level} Risk
-      </div>
+      <RiskBadge level={level} className="mt-2" />
     </div>
   );
 };

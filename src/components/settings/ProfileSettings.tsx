@@ -1,139 +1,76 @@
 
-import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-
-interface UserProfile {
-  name: string;
-  email: string;
-  workId: string;
-  specialization: string;
-  licenseNumber: string;
-}
+import { exportDemoData, resetDemoData } from "@/stores/demoStore";
+import { Download, RefreshCw } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 const ProfileSettings = () => {
-  const { clinician, currentUser, logout } = useAuth();
-  const [profileForm, setProfileForm] = useState<UserProfile>({
-    name: '',
-    email: '',
-    workId: '',
-    specialization: '',
-    licenseNumber: ''
-  });
-  const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
-  useEffect(() => {
-    if (clinician && currentUser) {
-      setProfileForm({
-        name: clinician.display_name || '',
-        email: clinician.email || currentUser.email || '',
-        workId: clinician.work_id || '',
-        specialization: clinician.specialization || '',
-        licenseNumber: clinician.license_number || ''
-      });
-    }
-  }, [clinician, currentUser]);
-
-  const handleChange = (field: keyof UserProfile, value: string) => {
-    setProfileForm(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const handleExport = () => {
+    const data = exportDemoData();
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'diatrack-demo-data.json';
+    a.click();
+    toast({ title: "Exported", description: "Demo data downloaded as JSON." });
   };
 
-  const handleSave = async () => {
-    if (!profileForm.name || !profileForm.email) {
-      toast({
-        title: "Error",
-        description: "Name and email are required.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    try {
-      // TODO: Implement real profile update API call
-      toast({
-        title: "Success",
-        description: "Profile updated successfully."
-      });
-      setIsEditing(false);
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: "Failed to update profile.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const handleReset = () => {
+    resetDemoData();
+    setShowResetConfirm(false);
+    toast({ title: "Reset complete", description: "Demo data restored to defaults." });
+    window.location.reload();
   };
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            value={profileForm.name}
-            onChange={(e) => handleChange('name', e.target.value)}
-            disabled={!isEditing}
-            className={!isEditing ? "bg-secondary border-none opacity-70" : "bg-secondary border-none"}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={profileForm.email}
-            onChange={(e) => handleChange('email', e.target.value)}
-            disabled={!isEditing}
-            className={!isEditing ? "bg-secondary border-none opacity-70" : "bg-secondary border-none"}
-          />
-        </div>
-      </div>
-      
-      <div className="flex flex-col sm:flex-row gap-3">
-        {isEditing ? (
-          <>
-            <Button onClick={handleSave} className="flex-1 bg-diabetesSense-accent hover:bg-diabetesSense-accent/90">
-              Save Changes
-            </Button>
-            <Button 
-              onClick={() => setIsEditing(false)} 
-              variant="outline" 
-              className="flex-1 border-gray-600 bg-transparent text-gray-300 hover:bg-gray-800"
-            >
-              Cancel
-            </Button>
-          </>
-        ) : (
-          <Button onClick={() => setIsEditing(true)} className="flex-1 bg-diabetesSense-accent hover:bg-diabetesSense-accent/90">
-            Edit Profile
-          </Button>
-        )}
-      </div>
-      
-      <div className="pt-4 border-t border-gray-800">
-        <Button onClick={handleLogout} variant="destructive" className="w-full">
-          Log Out
+    <div className="space-y-4">
+      <p style={{ fontSize: 'var(--text-body-md)', color: 'var(--color-text-secondary)' }}>
+        Demo mode stores all patient and assessment data locally in your browser. No account required.
+      </p>
+      <div className="flex flex-wrap gap-3">
+        <Button variant="outline" onClick={handleExport}>
+          <Download className="h-4 w-4 mr-2" /> Export Demo Data
+        </Button>
+        <Button variant="destructive" onClick={() => setShowResetConfirm(true)}>
+          <RefreshCw className="h-4 w-4 mr-2" /> Reset Demo Data
         </Button>
       </div>
+
+      <Dialog open={showResetConfirm} onOpenChange={setShowResetConfirm}>
+        <DialogContent className="max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <span style={{ color: 'var(--color-risk-high-accent)' }} aria-hidden="true">⚠</span>
+              Reset Demo Data
+            </DialogTitle>
+            <DialogDescription>
+              This will permanently delete all local patient records and assessments, then restore
+              default seed data. This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setShowResetConfirm(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleReset}>
+              Reset Demo Data
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

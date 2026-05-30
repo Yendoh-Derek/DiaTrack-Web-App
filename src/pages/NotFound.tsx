@@ -1,31 +1,33 @@
 
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen bg-diabetesSense-background flex flex-col items-center justify-center p-4">
-      <div className="text-center">
-        <h1 className="text-7xl font-bold text-diabetesSense-accent mb-4">404</h1>
-        <p className="text-xl text-gray-300 mb-6">Oops! Page not found</p>
-        <Button 
-          onClick={() => window.location.href = "/"}
-          className="inline-flex items-center bg-diabetesSense-accent hover:bg-diabetesSense-accent/90"
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-6"
+      style={{ background: 'var(--color-bg-canvas)' }}
+    >
+      <div className="clinical-card text-center max-w-md">
+        <p
+          className="tabular-nums font-bold mb-2"
+          style={{ fontSize: 'var(--text-data-xl)', color: 'var(--color-brand-600)' }}
         >
-          <ArrowLeft size={18} className="mr-2" />
-          Return to Home
-        </Button>
+          404
+        </p>
+        <h1 className="clinical-card-title mb-2">Page not found</h1>
+        <p className="mb-6" style={{ fontSize: 'var(--text-body-md)', color: 'var(--color-text-secondary)' }}>
+          No route matches <code style={{ fontFamily: 'var(--font-mono)' }}>{location.pathname}</code>
+        </p>
+        <Link to="/dashboard">
+          <Button>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Return to Dashboard
+          </Button>
+        </Link>
       </div>
     </div>
   );

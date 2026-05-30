@@ -1,72 +1,78 @@
 
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import MainNav from '@/components/navigation/MainNav';
+import AppLayout from '@/components/layout/AppLayout';
 import ProfileSettings from '@/components/settings/ProfileSettings';
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useTheme } from '@/context/ThemeContext';
+import { MODEL_VERSION } from '@/constants/riskThresholds';
 
 const SettingsPage = () => {
-  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-diabetesSense-background flex flex-col">
-      <MainNav />
-      
-      <div className="flex-1 p-4 md:p-6">
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-white">Settings</h1>
-          <p className="text-gray-400">Manage your account and preferences</p>
-        </header>
-        
-        <Card className="card-gradient border border-white/10 mb-6">
-          <CardHeader>
-            <CardTitle>Account Settings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ProfileSettings />
-          </CardContent>
-        </Card>
-        
-        <Card className="card-gradient border border-white/10 mb-6">
-          <CardHeader>
-            <CardTitle>Diabetes Sense App</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div>
-              <h3 className="text-lg font-medium text-white mb-2">About</h3>
-              <p className="text-gray-300">Diabetes Sense helps you monitor and understand your risk for Type 2 Diabetes through personalized assessments and recommendations.</p>
-            </div>
-            
-            <Separator className="bg-white/10" />
-            
-            <div>
-              <h3 className="text-lg font-medium text-white mb-2">Privacy Policy</h3>
-              <p className="text-gray-300 mb-4">Your health data is stored locally on your device. We do not share your personal information with third parties.</p>
-              <a href="#" className="text-diabetesSense-accent hover:underline">Read full privacy policy</a>
-            </div>
-            
-            <Separator className="bg-white/10" />
-            
-            <div>
-              <h3 className="text-lg font-medium text-white mb-2">Terms of Service</h3>
-              <p className="text-gray-300 mb-4">By using this application, you agree to our terms of service.</p>
-              <a href="#" className="text-diabetesSense-accent hover:underline">Read terms of service</a>
-            </div>
-            
-            <Separator className="bg-white/10" />
-            
-            <div>
-              <h3 className="text-lg font-medium text-white mb-2">App Version</h3>
-              <p className="text-gray-300">Version 1.0.0</p>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <div className="text-center text-sm text-gray-500 mt-8">
-          <p>© {new Date().getFullYear()} Diabetes Sense. All rights reserved.</p>
+    <AppLayout>
+      <header className="mb-6">
+        <h1 className="font-semibold" style={{ fontSize: 'var(--text-display)' }}>Settings</h1>
+        <p style={{ fontSize: 'var(--text-body-md)', color: 'var(--color-text-secondary)' }}>
+          Demo data and app preferences
+        </p>
+      </header>
+
+      <div className="clinical-card mb-6 max-w-2xl">
+        <div className="clinical-card-header">
+          <h2 className="clinical-card-title">Appearance</h2>
+        </div>
+        <div className="flex items-center justify-between">
+          <div>
+            <Label className="normal-case tracking-normal text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>
+              Dark Mode
+            </Label>
+            <p style={{ fontSize: 'var(--text-body-sm)', color: 'var(--color-text-tertiary)' }}>
+              Switch between light and dark clinical themes
+            </p>
+          </div>
+          <Switch
+            checked={theme === 'dark'}
+            onCheckedChange={toggleTheme}
+            aria-label="Toggle dark mode"
+          />
         </div>
       </div>
-    </div>
+
+      <div className="clinical-card mb-6 max-w-2xl">
+        <div className="clinical-card-header">
+          <h2 className="clinical-card-title">Demo Data</h2>
+        </div>
+        <ProfileSettings />
+      </div>
+
+      <div className="clinical-card max-w-2xl">
+        <div className="clinical-card-header">
+          <h2 className="clinical-card-title">About DiaTrack</h2>
+        </div>
+        <div className="space-y-4" style={{ fontSize: 'var(--text-body-md)', color: 'var(--color-text-secondary)' }}>
+          <p>
+            DiaTrack is a clinician-facing diabetes risk assessment demo. Predictions use an
+            in-browser logistic regression model (ONNX). All data is stored locally.
+          </p>
+          <Separator />
+          <div>
+            <h3 className="font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+              Disclaimer
+            </h3>
+            <p style={{ fontSize: 'var(--text-body-sm)' }}>
+              This application is for educational and portfolio demonstration purposes only.
+              It is not intended for clinical diagnosis or medical decision-making.
+            </p>
+          </div>
+          <Separator />
+          <p style={{ fontSize: 'var(--text-body-sm)', color: 'var(--color-text-tertiary)' }}>
+            Version 1.0.0 · Model v{MODEL_VERSION} · © {new Date().getFullYear()} DiaTrack
+          </p>
+        </div>
+      </div>
+    </AppLayout>
   );
 };
 

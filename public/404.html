@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DiaTrack</title>
+    <script>
+      (function () {
+        var redirect = sessionStorage.getItem("spa-redirect");
+        if (redirect) {
+          sessionStorage.removeItem("spa-redirect");
+          history.replaceState(null, "", redirect);
+        } else {
+          sessionStorage.setItem("spa-redirect", location.pathname + location.search + location.hash);
+          location.replace(document.querySelector("base")?.href || "/DiaTrack-Web-App/");
+        }
+      })();
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/DiaTrack-Web-App/'" />
+  </head>
+  <body></body>
+</html>
