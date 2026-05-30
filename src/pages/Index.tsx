@@ -1,141 +1,102 @@
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context/AuthContext";
+import { Activity, ClipboardList, Users, Shield } from 'lucide-react';
 
-const tips = [
+const features = [
   {
-    title: 'Balanced Plate Method',
-    text: 'Fill half your plate with non‑starchy vegetables, a quarter with lean protein, and a quarter with whole grains.',
+    title: 'Risk Assessment',
+    text: 'Run ML-powered diabetes risk predictions with feature importance analysis and clinical flag detection.',
+    icon: ClipboardList,
   },
   {
-    title: 'Consistent Carbs',
-    text: 'Spread carbohydrate intake across meals and snacks to reduce glucose spikes.',
+    title: 'Patient Management',
+    text: 'Track patients, view assessment history, and monitor risk trends over time in a structured clinical workflow.',
+    icon: Users,
   },
   {
-    title: 'Move Every Day',
-    text: 'Aim for 150+ minutes of moderate activity weekly; add resistance training 2–3 times/week.',
-  },
-  {
-    title: 'Hydrate Smart',
-    text: 'Prefer water or unsweetened beverages. Limit sugary drinks and fruit juices.',
-  },
-  {
-    title: 'Sleep & Stress',
-    text: '7–9 hours sleep and stress management help insulin sensitivity and appetite control.',
-  },
-  {
-    title: 'Monitor & Record',
-    text: 'Track blood glucose, HbA1c, activity, and meals to spot patterns and adjust early.',
+    title: 'Clinical Decision Support',
+    text: 'Clear risk tiers, SHAP values, and model metadata designed for clinician trust and transparency.',
+    icon: Shield,
   },
 ];
 
 const Index = () => {
-  const { currentUser, clinician, loading } = useAuth();
-
   return (
-    <div className="min-h-screen bg-diabetesSense-background flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="bg-white/5 backdrop-blur-sm border-b border-white/10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded-xl bg-diabetesSense-accent flex items-center justify-center">
-                <span className="text-2xl font-bold text-white">DT</span>
-              </div>
-              <h1 className="text-2xl font-bold text-white">DiaTrack</h1>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-bg-canvas)' }}>
+      <header
+        className="border-b"
+        style={{ background: 'var(--color-bg-surface)', borderColor: 'var(--color-border-default)' }}
+      >
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-9 h-9 rounded-md flex items-center justify-center"
+              style={{ background: 'var(--color-brand-600)' }}
+            >
+              <Activity className="w-5 h-5 text-white" aria-hidden="true" />
             </div>
-            <div className="flex items-center space-x-4">
-              {currentUser ? (
-                <div className="flex items-center space-x-4">
-                  <span className="text-white">Welcome, {clinician?.display_name || currentUser.email}</span>
-                  <Link to="/dashboard">
-                    <Button className="bg-diabetesSense-accent hover:bg-diabetesSense-accent/90">
-                      Go to Dashboard
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-4">
-                  <Link to="/login">
-                    <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link to="/login">
-                    <Button className="bg-diabetesSense-accent hover:bg-diabetesSense-accent/90">
-                      Get Started
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
+            <span className="font-semibold" style={{ fontSize: 'var(--text-heading-md)', color: 'var(--color-brand-900)' }}>
+              DiaTrack
+            </span>
           </div>
+          <Link to="/dashboard">
+            <Button>Launch Demo</Button>
+          </Link>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative py-16 md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
-            Evidence‑based diabetes management, powered by AI
-          </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-            Assess risk, track patients, and coach smarter with actionable insights.
+      <main className="flex-1 max-w-5xl mx-auto px-6 py-16 w-full">
+        <div className="text-center mb-16">
+          <h1
+            className="font-semibold mb-4"
+            style={{ fontSize: 'clamp(28px, 5vw, 40px)', color: 'var(--color-text-primary)', lineHeight: 1.25 }}
+          >
+            Evidence-based diabetes risk assessment
+          </h1>
+          <p
+            className="max-w-2xl mx-auto mb-2"
+            style={{ fontSize: 'var(--text-body-lg)', color: 'var(--color-text-secondary)' }}
+          >
+            Clinician-facing demo workflow: assess risk with an in-browser ML model, track patients,
+            and explore clinical insights.
           </p>
-          <div className="mt-8 flex justify-center gap-3">
-            <Link to={currentUser ? '/assessment' : '/login'}>
-              <Button size="lg" className="bg-diabetesSense-accent hover:bg-diabetesSense-accent/90 px-8 py-6">
-                Start an Assessment
-              </Button>
+          <p style={{ fontSize: 'var(--text-body-sm)', color: 'var(--color-text-tertiary)' }}>
+            For educational and portfolio demonstration only. Not for clinical diagnosis.
+          </p>
+          <div className="mt-8 flex justify-center gap-3 flex-wrap">
+            <Link to="/dashboard">
+              <Button size="lg">Launch Demo</Button>
             </Link>
-            <Link to={currentUser ? '/patients' : '/login'}>
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10 px-8 py-6">
-                View Patients
-              </Button>
+            <Link to="/assessment">
+              <Button size="lg" variant="outline">Start Assessment</Button>
             </Link>
           </div>
         </div>
 
-        {/* Floating cards */}
-        <div className="pointer-events-none absolute inset-0 -z-0">
-          <div className="absolute inset-0 animate-pulse-slow opacity-30 bg-[radial-gradient(circle_at_center,_rgba(47,128,237,0.15),_transparent_50%)]"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {features.map((feature) => (
+            <div key={feature.title} className="clinical-card">
+              <feature.icon
+                className="h-5 w-5 mb-3"
+                style={{ color: 'var(--color-brand-600)' }}
+                aria-hidden="true"
+              />
+              <h2 className="clinical-card-title mb-2">{feature.title}</h2>
+              <p style={{ fontSize: 'var(--text-body-md)', color: 'var(--color-text-secondary)' }}>
+                {feature.text}
+              </p>
+            </div>
+          ))}
         </div>
-      </section>
+      </main>
 
-      {/* Tips grid with floating animation */}
-      <section className="relative pb-24">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tips.map((tip, idx) => (
-              <div
-                key={tip.title}
-                className={`relative group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 overflow-hidden transition-transform duration-500 will-change-transform hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.25)] ${
-                  idx % 3 === 0 ? 'animate-float-a' : idx % 3 === 1 ? 'animate-float-b' : 'animate-float-c'
-                }`}
-                style={{ animationDelay: `${(idx % 3) * 0.4}s` }}
-              >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-diabetesSense-accent/10 to-transparent" />
-                <h3 className="text-xl font-semibold text-white mb-2">{tip.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{tip.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Keyframes */}
-      <style>{`
-        @keyframes floatA { 0% { transform: translateY(0px) } 50% { transform: translateY(-6px) } 100% { transform: translateY(0px) } }
-        @keyframes floatB { 0% { transform: translateY(0px) } 50% { transform: translateY(-10px) } 100% { transform: translateY(0px) } }
-        @keyframes floatC { 0% { transform: translateY(0px) } 50% { transform: translateY(-8px) } 100% { transform: translateY(0px) } }
-        .animate-float-a { animation: floatA 6s ease-in-out infinite; }
-        .animate-float-b { animation: floatB 7s ease-in-out infinite; }
-        .animate-float-c { animation: floatC 8s ease-in-out infinite; }
-        .animate-pulse-slow { animation: pulse 8s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: .2 } 50% { opacity: .45 } }
-      `}</style>
+      <footer
+        className="border-t py-4 text-center"
+        style={{ borderColor: 'var(--color-border-default)', color: 'var(--color-text-tertiary)', fontSize: 'var(--text-body-sm)' }}
+      >
+        © {new Date().getFullYear()} DiaTrack · Clinical Precision Design
+      </footer>
     </div>
   );
 };

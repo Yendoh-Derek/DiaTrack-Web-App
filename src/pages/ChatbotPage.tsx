@@ -1,34 +1,21 @@
 
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import MainNav from '@/components/navigation/MainNav';
+import AppLayout from '@/components/layout/AppLayout';
 import Chatbot from '@/components/chatbot/Chatbot';
 
 const ChatbotPage = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen bg-diabetesSense-background flex flex-col">
-      <MainNav />
-      
-      <div className="flex-1 p-4 md:p-6">
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-white">Health Assistant</h1>
-          <p className="text-gray-400">Ask questions about diabetes and health</p>
-        </header>
-        
-        <Card className="card-gradient border border-white/10 h-[calc(100vh-200px)]">
-          <CardHeader>
-            <CardTitle>Chat with Our AI Assistant</CardTitle>
-          </CardHeader>
-          <CardContent className="h-full pb-6">
-            <div className="h-full">
-              <Chatbot />
-            </div>
-          </CardContent>
-        </Card>
+    <AppLayout>
+      <header className="mb-6">
+        <h1 className="font-semibold" style={{ fontSize: 'var(--text-display)' }}>Clinical Chat</h1>
+        <p style={{ fontSize: 'var(--text-body-md)', color: 'var(--color-text-secondary)' }}>
+          Ask questions about diabetes risk factors and lifestyle guidance
+        </p>
+      </header>
+
+      <div className="clinical-card" style={{ height: 'calc(100vh - 220px)', minHeight: 400 }}>
+        <Chatbot />
       </div>
-    </div>
+    </AppLayout>
   );
 };
 
