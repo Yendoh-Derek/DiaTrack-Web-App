@@ -1,161 +1,69 @@
-# DiaTrack - Clinical Diabetes Management Platform
+# DiaTrack
 
-## Project Overview
+Type 2 diabetes risk assessment  for clinicians. Runs entirely in the browser with an ONNX logistic regression model and localStorage demo data.
 
-DiaTrack is a comprehensive clinical support tool designed to help healthcare professionals manage diabetes patients effectively. The platform provides clinicians with tools to register patients, conduct diabetes risk assessments, track patient progress, and deliver personalized care recommendations.
+**Live demo:** `https://<your-username>.github.io/DiaTrack-Web-App/` (after enabling GitHub Pages)
 
-## Key Features
+> For educational and portfolio demonstration only. Not for clinical diagnosis.
 
-### For Clinicians
-- **Patient Management**: Register and manage multiple patients with comprehensive medical profiles
-- **Risk Assessment**: Conduct diabetes risk assessments using advanced AI models
-- **Progress Tracking**: Monitor patient progress over time with detailed analytics
-- **Clinical Insights**: Get AI-powered insights and recommendations for patient care
-- **Secure Platform**: HIPAA-compliant data management with role-based access control
+## Features
 
-### Patient Management
-- Complete patient registration with medical history
-- Patient ID system for easy identification
-- Contact information and emergency details
-- Medical history tracking and updates
+- **ML risk assessment** — in-browser ONNX inference with feature contribution breakdown
+- **Patient management** — register and search demo patients
+- **Assessment history** — per-patient charts and global assessment log
+- **Health chatbot** — educational fallback responses (no API key needed)
+- **GitHub Pages ready** — static build with SPA routing support
 
-### Assessment Tools
-- Diabetes risk assessment using machine learning models
-- Interpretable AI results with feature importance
-- Personalized recommendations based on patient data
-- Progress tracking and trend analysis
+## Quick start
 
-## Technology Stack
-
-This project is built with:
-
-- **Frontend**: React 18 with TypeScript
-- **UI Framework**: shadcn/ui components with Tailwind CSS
-- **Backend**: Supabase (PostgreSQL + Auth + Real-time)
-- **State Management**: React Context + TanStack Query
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS with custom diabetes-themed design system
-
-## Getting Started
-
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Supabase account and project
-
-### Installation
-
-```sh
-# Clone the repository
-git clone <YOUR_GIT_URL>
-
-# Navigate to the project directory
-cd diatrack
-
-# Install dependencies
+```bash
 npm install
-
-# Set up environment variables
-cp .env.example .env.local
-# Add your Supabase URL and anon key to .env.local
-
-# Start the development server
-npm run dev
+npm run dev        # http://localhost:8080
 ```
 
+Click **Launch Demo** on the landing page — no login or backend required.
 
-### Supabase Configuration
+## Scripts
 
-To ensure proper authentication flow, configure your Supabase project:
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Development server |
+| `npm run build` | Production build → `dist/` |
+| `npm run preview` | Preview production build |
+| `npm run test` | Run Vitest tests |
+| `npm run train-model` | Retrain ONNX model (requires Python 3.10+) |
 
-1. **Disable Email Confirmation** (Recommended for development):
-   - Go to your Supabase Dashboard
-   - Navigate to Authentication > Settings
-   - Set "Enable email confirmations" to OFF
-   - This allows immediate login after signup
+## Environment
 
-2. **Or Enable Email Confirmation** (For production):
-   - Keep email confirmations enabled
-   - Users will need to verify their email before logging in
-   - Configure email templates in Authentication > Email Templates
+Copy `.env.example` to `.env`:
 
-## Database Schema
-
-### Clinicians Table
-- `id`: Primary key (UUID)
-- `user_id`: Reference to auth.users
-- `work_id`: Unique clinician work ID
-- `display_name`: Clinician's full name
-- `email`: Contact email
-- `specialization`: Medical specialization
-- `license_number`: Professional license number
-
-### Patients Table
-- `id`: Primary key (UUID)
-- `clinician_id`: Reference to clinicians table
-- `patient_id`: Unique patient identifier
-- `first_name`, `last_name`: Patient name
-- `date_of_birth`: Patient DOB
-- `gender`: Patient gender
-- `contact_number`: Phone number
-- `email`: Patient email
-- `address`: Patient address
-- `emergency_contact`: Emergency contact info
-- `medical_history`: JSON field for medical data
-
-## Development
-
-### Running the Application
-
-```sh
-# Development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
+```
+VITE_DEMO_MODE=true
 ```
 
-### Database Migrations
+## GitHub Pages deployment
 
-The project includes Supabase migrations for the database schema. To apply migrations:
+1. Push to GitHub
+2. Enable **Pages → Source: GitHub Actions** in repository settings
+3. The workflow in `.github/workflows/deploy-pages.yml` builds and deploys on push to `main`
 
-```sh
-# Apply migrations to your Supabase project
-supabase db push
+For local production preview with the correct base path:
+
+```bash
+# PowerShell
+$env:GITHUB_PAGES="true"; npm run build; npm run preview
 ```
 
-## Deployment
+## Documentation
 
-### Via Lovable
-Simply open [Lovable](https://lovable.dev) and click on Share -> Publish.
+- [Demo mode](docs/DEMO.md)
+- [ML model](docs/MODEL.md)
+- [Grok integration (optional)](docs/GROK.md)
 
-### Manual Deployment
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder to your preferred hosting platform
-3. Configure environment variables on your hosting platform
+## Tech stack
 
-## Security Features
-
-- Row Level Security (RLS) policies ensure data isolation
-- Clinicians can only access their own patients
-- Secure authentication via Supabase Auth
-- Encrypted data transmission
-- Role-based access control
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+React 18 · TypeScript · Vite · Tailwind CSS · shadcn/ui · Recharts · ONNX Runtime Web
 
 ## License
 
-This project is licensed under the MIT License.
-
-## Support
-
-For support and questions, please contact the development team or create an issue in the repository.
+MIT
