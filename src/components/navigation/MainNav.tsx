@@ -28,7 +28,7 @@ const MainNav = () => {
     : navItems;
 
   return (
-    <nav className="bg-diabetesSense-background border-b border-white/10 pb-1">
+    <nav className="bg-diatrack-background border-b border-white/10 pb-1">
       <div className="container mx-auto">
         <div className="flex items-center justify-between overflow-x-auto hide-scrollbar">
           <div className="flex space-x-1 md:space-x-4 w-full justify-between px-2">
@@ -39,7 +39,7 @@ const MainNav = () => {
                 className={({ isActive }) => `
                   flex flex-col items-center py-2 px-2 md:px-3 transition-colors rounded-md
                   ${isActive 
-                    ? "text-diabetesSense-accent border-b-2 border-diabetesSense-accent" 
+                    ? "text-diatrack-accent border-b-2 border-diatrack-accent" 
                     : "text-gray-400 hover:text-white"
                   }
                 `}
