@@ -38,10 +38,6 @@ coverage/
 supabase/.branches/
 supabase/.temp/tailwind.config.ts
 postcss.config.js
-src/index.css
-src/context/ThemeContext.tsx
-design_plan.mdtailwind.config.ts
-postcss.config.js
-src/index.css
-src/context/ThemeContext.tsx
 design_plan.md
+tailwind.config.ts
+postcss.config.js
